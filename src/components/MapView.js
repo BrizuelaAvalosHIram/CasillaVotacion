@@ -4,6 +4,9 @@ import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import Markers from './Markers';
 import BarsChart from './BarsChart';
+import bolilloImage from '../assets/bolillo.png';
+import monegraImage from '../assets/monegra.png';
+import princessImage from '../assets/princess.png';
 
 const MapView = () => {
   const [apiData, setApiData] = useState(null);
@@ -80,7 +83,13 @@ const MapView = () => {
         height="480"
         src="https://charts.mongodb.com/charts-project-0-cserj/embed/charts?id=65678a54-12c2-41d8-8711-2ce07b5c034d&maxDataAge=60&theme=light&autoRefresh=true"
       ></iframe>
-
+{/* Agregar logos */}
+<div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '20px' }}>
+      <img src={monegraImage} alt="Logo 1" style={{ width: '100px', height: 'auto', marginRight: '95px'}} />
+      <img src={bolilloImage} alt="Logo 2" style={{ width: '100px', height: 'auto'}} />
+      <img src={princessImage} alt="Logo 2" style={{ width: '100px', height: 'auto', marginLeft: '95px'}} />
+      {/* Agrega más elementos img para más logos */}
+    </div>
 
 
     </div>

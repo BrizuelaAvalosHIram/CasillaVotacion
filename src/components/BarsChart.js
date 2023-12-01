@@ -22,8 +22,14 @@ ChartJS.register(
   Legend,
   Filler,
 );
+let votos = [];
+const BarsChart = () => 
+{
+  setTimeout(() => {
+    console.log(votos);
+  }, 20000); 
 
-const BarsChart = () => {
+  data = votos; 
   const [data, setData] = useState({
     labels: [],
     datasets: [
@@ -45,6 +51,7 @@ const BarsChart = () => {
       wss.addEventListener('message', (event) => {
         try {
           const messageObj = JSON.parse(event.data);
+          votos.push(messageObj);
           console.log('Datos recibidos desde la API (BarsChart):', messageObj);
           setData((prevData) => ({
             ...prevData,
