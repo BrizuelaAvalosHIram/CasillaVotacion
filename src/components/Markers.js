@@ -5,7 +5,7 @@ import {places} from '../assets/data.json';
 const Markers = () => {
     return (
         
-        <Marker position={{lat: "19.245947239237", lng: "-103.7529832426577"}} icon={IconLocation} />
+        <Marker position={{lat: "19.2491977030456", lng: "-103.69737828607505"}} icon={IconLocation} />
     );
 };
 

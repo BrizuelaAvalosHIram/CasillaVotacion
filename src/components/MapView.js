@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import Markers from './Markers';
+import BarsChart from './BarsChart';
 
 const MapView = () => {
   const [apiData, setApiData] = useState(null);
@@ -19,11 +20,13 @@ const MapView = () => {
         let messageObj = JSON.parse(event.data);
         console.log('Datos recibidos desde la API:', messageObj);
         setApiData(messageObj); // Actualiza el estado con los datos recibidos
+
+         // Almacena los datos en localStorage para recuperarlos al recargar la página
+         localStorage.setItem('lastVote', JSON.stringify(messageObj));
       } catch (error) {
         console.error('Error al analizar los datos de la API:', error);
       }
     });
-
     wss.addEventListener('close', (event) => {
       console.log('Conexión WebSocket cerrada:', event);
     });
@@ -31,7 +34,11 @@ const MapView = () => {
     wss.addEventListener('error', (error) => {
       console.error('Error en la conexión WebSocket:', error);
     });
-
+    // Recupera los datos almacenados localmente al cargar el componente
+    const storedVote = localStorage.getItem('lastVote');
+    if (storedVote) {
+      setApiData(JSON.parse(storedVote));
+    }
     // Limpiar el WebSocket al desmontar el componente
     return () => {
       wss.close();
@@ -41,10 +48,11 @@ const MapView = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <div style={{ flex: '0' }}>
-        <h1>Mapa</h1>
+        <h1>Casilla de votación</h1>
       </div>
+      
       <div style={{ flex: '1', width: '70vw', height: '50vh', margin: '20px' }}>
-        <MapContainer center={{ lat: '19.2459', lng: '-103.7529' }} zoom={13}>
+        <MapContainer center={{ lat: '19.2491977030456', lng: '-103.69737828607505' }} zoom={13}>
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -54,18 +62,12 @@ const MapView = () => {
       </div>
       {apiData && (
         <div>
-          <h2>Datos de la API</h2>
-          <div className="api-data-container">
-            <p><strong>ID Casilla:</strong> {apiData.id_casilla}</p>
-            <p><strong>Ciudad:</strong> {apiData.ciudad}</p>
-            <p><strong>ID Votante:</strong> {apiData.idVotante}</p>
-            <p><strong>Voto:</strong> {apiData.voto}</p>
-            <p><strong>Fecha:</strong> {apiData.fecha}</p>
-            <p><strong>Hora:</strong> {apiData.hora}</p>
-          </div>
+          {console.log('Datos de la API:', apiData)}
         </div>
       )} 
-      <h1>Gráfica</h1>
+
+
+      <h1>Gráfica de mongo DB charts</h1>
       {/* Agregar el iframe de MongoDB Charts */}
       <iframe
         style={{
@@ -78,6 +80,9 @@ const MapView = () => {
         height="480"
         src="https://charts.mongodb.com/charts-project-0-cserj/embed/charts?id=65678a54-12c2-41d8-8711-2ce07b5c034d&maxDataAge=60&theme=light&autoRefresh=true"
       ></iframe>
+
+
+
     </div>
   );
 };
